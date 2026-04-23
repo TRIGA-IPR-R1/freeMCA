@@ -31,9 +31,9 @@ E as seguintes alternativas SoM de desenvolvimento aberto pela comunidade (MuseL
 
 ### Conversor Analógico-Digital (ADC)
 O front-end de aquisição está sendo desenhado de forma modular, pois o ADC mais adequado depende das características do detector utilizado. Atualmente, o projeto está conduzindo estudos de viabilidade e testes de integração com os seguintes CIs:
-* [**KeYi_AD9248:**](https://item.taobao.com/item.htm?id=765597907964) 2 canais de 14 bits de resolução a 65 MSPS.
-* [**KeYi_AD9245:**](https://item.taobao.com/item.htm?id=967921950787) 1 canal de 14 bits de resolução a 80 MSPS.
-* [**KeYi_AD9481:**](https://item.taobao.com/item.htm?id=798227328346) 1 canal de 8 bits de resolução a 250 MSPS.
+* [**KeYi_AD9248_65:**](https://item.taobao.com/item.htm?id=765597907964) 2 canais de 14 bits de resolução a 65 MSPS.
+* [**KeYi_AD9245_80:**](https://item.taobao.com/item.htm?id=967921950787) 1 canal de 14 bits de resolução a 80 MSPS.
+* [**KeYi_AD9481_250:**](https://item.taobao.com/item.htm?id=798227328346) 1 canal de 8 bits de resolução a 250 MSPS.
 
 
 ### Programação
