@@ -1,0 +1,75 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (C) 2026 Daniel Batista, Thalles Campagnani
+This file is part of freeMCA and is licensed under the GNU GPL v3 or later.
+See <https://www.gnu.org/licenses/>.
+
+ExtBoard ports order:
+ETH1_2P | ETH1_4P
+ETH1_2N | ETH1_4N
+ETH1_1N | ETH1_3N
+ETH1_1P | ETH1_3P
+GND     | GND
+3V3     | 3V3
+NC      | NC
+5V      | GND
+NC      | NC
+ETH2_1P | ETH2_3P
+ETH2_1N | ETH2_3N
+ETH2_2N | ETH2_4N
+ETH2_2P | ETH2_4P
+GND     | GND
+3V3     | 3V3
+
+
+PMODs ports order:
+D0P | D0N
+D1P | D1N
+D2P | D2N
+D3P | D3N
+GND | GND
+3V3 | 3V3
+
+
+Connection ExtBoard<->PMODs:
+Do not plug a PMOD straight onto the ExtBoard. ExtBoard keeps each MDI pair
+in a COLUMN (P/N stacked); the PMOD keeps each pair in a ROW (P | N). A
+1:1 mate crosses pairs and only 10/100 (or nothing) comes up. Use jumpers.
+ETH*_1 = MDI0 = PMOD D0, then 2→D1, 3→D2, 4→D3.
+P goes to P, N to N. 3V3 only — leave 5V and NC unconnected.
+
+
+PMOD ETH1 (top 6 rows of the ExtBoard)
+
+ExtBoard     PMOD
+-----------------
+ETH1_1P  --> D0P
+ETH1_1N  --> D0N
+ETH1_2P  --> D1P
+ETH1_2N  --> D1N
+ETH1_3P  --> D2P
+ETH1_3N  --> D2N
+ETH1_4P  --> D3P
+ETH1_4N  --> D3N
+GND      --> GND   (both pins)
+3V3      --> 3V3   (both pins)
+
+
+PMOD ETH2 (bottom 6 rows of the ExtBoard)
+
+ExtBoard     PMOD
+-----------------
+ETH2_1P  --> D0P
+ETH2_1N  --> D0N
+ETH2_2P  --> D1P
+ETH2_2N  --> D1N
+ETH2_3P  --> D2P
+ETH2_3N  --> D2N
+ETH2_4P  --> D3P
+ETH2_4N  --> D3N
+GND      --> GND   (both pins)
+3V3      --> 3V3   (both pins)
+
+
+If you stacked them without jumpers, the first row would be
+ETH1_2P|ETH1_4P onto D0P|D0N — two different pairs, both positives.
+That is the scramble. The middle 5V | GND | NC block is not a PMOD.

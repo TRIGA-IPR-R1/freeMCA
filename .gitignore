@@ -1,8 +1,32 @@
-# Arquivos gerados pelo openXC7
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+
+# Editor / SO
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.code-workspace
+
+
+# Build openXC7 / Yosys / nextpnr
 *.bit
 *.fasm
 *.frames
 *.json
-
-# chipdb 
 *.bin
+
+
+# iverilog simulation
+*.vvp
+*.vcd
+*.fst
+*.hex

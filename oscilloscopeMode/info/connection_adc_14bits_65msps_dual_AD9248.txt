@@ -1,0 +1,55 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (C) 2026 Daniel Batista, Thalles Campagnani
+This file is part of freeMCA and is licensed under the GNU GPL v3 or later.
+See <https://www.gnu.org/licenses/>.
+
+ExtBoard ports order:
+------------
+AB21 |  Y21
+U17  |  T18
+R17  |  U18
+R18  |  N18
+GND  |  GND
+3V3  |  3V3
+R19  |  N19
+5V   |  GND
+N15  |  M16
+K14  |  L15
+M15  |  L16
+N22  |  AA8
+J15  |  J14
+GND  |  GND
+3V3  |  3V3
+
+
+Connection ExtBoard<->AD9248:
+D0 = LSB .. D13 = MSB.
+ACL/BCL are FPGA OUTPUTS (31.25 MHz, 180 deg). Module 5V on the 5V pin.
+
+FPGA     ADC      role
+-----------------------------
+AB21 --> BOT      OTR_B (in)
+U17  --> D1       data[1]
+R17  --> D3       data[3]
+R18  --> D5       data[5]
+R19  --> D7       data[7]
+N15  --> D9       data[9]
+K14  --> D11      data[11]
+M15  --> D13      data[13] MSB
+N22  --> ACL      CLK_A (FPGA out)
+J15  --> ------   NC
+-----------------------------
+Y21  --> BCL      CLK_B (FPGA out, ~CLK_A)
+T18  --> D0       data[0] LSB
+U18  --> D2       data[2]
+N18  --> D4       data[4]
+N19  --> D6       data[6]
+M16  --> D8       data[8]
+L15  --> D10      data[10]
+L16  --> D12      data[12]
+AA8  --> A0T      OTR_A (in)
+J14  --> ------   NC
+
+UDP on PHY0 only (one 1G cable):
+  ch A port 5000,  ch B port 5001
+14-bit packed offset-binary @ 31.25 MSPS/ch (~928 Mbps total).
