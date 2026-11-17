@@ -30,3 +30,12 @@ Thumbs.db
 *.vcd
 *.fst
 *.hex
+
+# C++ shared lib
+*.so
+*.o
+*.a
+
+# Captures
+*.csv
+*.i16

@@ -10,7 +10,8 @@ Alvo atual: **Colorlight i9plus-v6.1** (XC7A50T) + módulo **KeYi AD9248** (2 ca
 oscilloscopeMode/
   README.md     este texto
   rtl/          gateware (Verilog) sintetizado na FPGA
-  host/         programas no PC que recebem e desenham o stream UDP
+  host/         programas no PC (Python) que configuram e chamam a lib
+  lib/          biblioteca C++ de captura UDP → CSV ou int16
   sim/          testbenches iverilog do empacotamento e do MAC UDP
   info/         pinouts e jumpers (não é código)
 ```
@@ -18,7 +19,8 @@ oscilloscopeMode/
 | Pasta | Significado do nome | O que entra |
 |---|---|---|
 | **rtl** | *Register-Transfer Level* — descrição do hardware em Verilog | Top, ADC, packetizer, UDP/RGMII, PLL, `config.vh` |
-| **host** | Máquina anfitriã (o PC), em oposição à FPGA | `udp_scope_rx.py`, `udp_scope_plot.py`, `adc_codec.py` |
+| **host** | Máquina anfitriã (o PC), em oposição à FPGA | plot/rx Python e o wrapper `udp_scope_lib.py` |
+| **lib** | biblioteca nativa | C++ que recebe UDP: CSV em volts ou binário `int16` |
 | **sim** | Simulação, sem placa | TBs, `Makefile`, checkers Python do payload |
 | **info** | Notas de conexão / pinagem | ExtBoard↔AD9248 e ExtBoard↔PMOD Ethernet |
 
@@ -53,6 +55,38 @@ python3 host/udp_scope_rx.py --port 5001    # só B
 ```
 
 Espera ~31.25 MSPS em cada porta, `packed/offset`, overflow 0.
+
+Gravar (C++): CSV em volts, ou binário cru `int16` little-endian (12/14 bits desempacotados, sinal estendido).
+
+```bash
+make -C lib
+python3 host/record_csv.py --port 5000 --out chA.csv --samples 1000000
+python3 host/record_csv.py --port 5000 --format int16 --out chA.bin --samples 31250000
+```
+
+```python
+from udp_scope_lib import UdpScope
+cap = UdpScope()
+cap.port = 5000
+cap.sample_rate = 31.25e6
+cap.v_range = 5.0          # ±5 V
+cap.format = "int16"       # ou "csv"
+cap.out_path = "chA.bin"
+cap.max_samples = 31_250_000
+cap.run()
+```
+
+- CSV `t_s,v`: `t_s = n / fs` (`1.345E-10`), `v = code_signed / 2^(bits-1) * v_range`.
+- `int16`: sequência de códigos com sinal, 2 bytes/amostra, LE. Tempo = `n / fs`.
+
+```python
+import numpy as np
+x = np.fromfile("chA.bin", dtype="<i2")
+v = x.astype(np.float64) / (1 << (14 - 1)) * 5.0
+t = np.arange(len(x)) / 31.25e6
+```
+
+1 s a 31.25 MSPS: ~954 MB CSV, ~62.5 MB `int16`.
 
 ## Payload UDP
 
