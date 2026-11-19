@@ -39,3 +39,10 @@ Thumbs.db
 # Captures
 *.csv
 *.i16
+
+# Local FPGA toolchain (see tools/download_toolchain.py)
+tools/openxc7/
+tools/oss-cad-suite/
+tools/downloads/
+tools/env.sh
+tools/__pycache__/
